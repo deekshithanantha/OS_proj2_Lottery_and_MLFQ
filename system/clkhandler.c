@@ -9,6 +9,21 @@
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
+	pid32 pid;
+
+	ctr1000++;  
+
+	if(proctab[currpid].prstate == PR_CURR) {
+		proctab[currpid].runtime++;
+	}
+
+	for(pid=0;pid<NPROC;pid++){
+		if(proctab[pid].prstate != PR_FREE) {
+			proctab[pid].turnaroundtime++;
+		}
+	}
+
+	
 
 	/* Decrement the ms counter, and see if a second has passed */
 
