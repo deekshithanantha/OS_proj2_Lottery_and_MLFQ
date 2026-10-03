@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -479,8 +479,8 @@ char *yytext;
 extern int linectr;
 extern int brkcount;
 int skipping;
-#line 482 "lex.yy.c"
 #line 483 "lex.yy.c"
+#line 484 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -699,7 +699,7 @@ YY_DECL
 	{
 #line 10 "config.l"
 
-#line 702 "lex.yy.c"
+#line 703 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -896,7 +896,7 @@ YY_RULE_SETUP
 #line 41 "config.l"
 ECHO;
 	YY_BREAK
-#line 899 "lex.yy.c"
+#line 900 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
