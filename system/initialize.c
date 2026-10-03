@@ -183,6 +183,7 @@ static	void	sysinit()
 		prptr->runtime = 0;
 		prptr->turnaroundtime = 0;
 		prptr->num_ctxsw = 0;
+		prptr->userprocess = FALSE;
 	}
 
 	/* Initialize the Null process entry */	

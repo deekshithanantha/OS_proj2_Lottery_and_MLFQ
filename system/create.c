@@ -52,6 +52,8 @@ pid32	create(
 	prptr->runtime = 0;
 	prptr->turnaroundtime = 0;
 	prptr->num_ctxsw = 0;
+	prptr->userprocess = FALSE;
+
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;
