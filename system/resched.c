@@ -1,6 +1,7 @@
 /* resched.c - resched, resched_cntl */
 
 #include <xinu.h>
+#define DEBUG_CTXSW
 
 struct	defer	Defer;
 
@@ -24,6 +25,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
+	#ifdef DEBUG_CTXSW
+		pid32 old_pid = currpid;
+	#endif
+
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (ptold->prprio > firstkey(readylist)) {
 			return;
@@ -42,6 +47,11 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 	proctab[currpid].num_ctxsw++;
+	#ifdef DEBUG_CTXSW
+		if(old_pid!=currpid) {
+			kprintf("ctxsw::%d-%d\n",old_pid,currpid);
+		}
+	#endif
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */
