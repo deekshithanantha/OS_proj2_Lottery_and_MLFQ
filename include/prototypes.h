@@ -334,6 +334,9 @@ extern	void	pdumph(struct netpacket *);
 /* in file platinit.c */
 extern	void	platinit(void);
 
+/* in file print_ready_list.c */
+extern	syscall	print_ready_list(void);
+
 /* in file ptclear.c */
 extern	void	_ptclear(struct ptentry *, uint16, int32 (*)(int32));
 
