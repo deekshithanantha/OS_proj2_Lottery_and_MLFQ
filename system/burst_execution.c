@@ -8,10 +8,7 @@
 	and execution phases not requiring it (CPU inactivity phases
  *------------------------------------------------------------------------
  */
-void burst_execution(
-	uint32 number_bursts, 
-	uint32 burst_duration, 
-	uint32 sleep_duration); 
+void burst_execution( uint32 number_bursts,  uint32 burst_duration,  uint32 sleep_duration)
 {
 	uint32 i;
 	uint32 initial_time;
@@ -19,7 +16,7 @@ void burst_execution(
 	struct procent *prptr = &proctab[currpid];
 
 
-	for(i=0; i<number_bursts, i++) {
+	for(i=0; i<number_bursts; i++) {
 		initial_time = prptr->runtime;
 
 		while (prptr->runtime-initial_time < burst_duration )

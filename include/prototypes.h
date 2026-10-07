@@ -340,6 +340,9 @@ extern	void	pdumph(struct netpacket *);
 /* in file platinit.c */
 extern	void	platinit(void);
 
+/* in file preliminary_tests.c */
+extern	process	preliminary_tests(void);
+
 /* in file print_ready_list.c */
 extern	syscall	print_ready_list(void);
 
