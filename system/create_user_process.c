@@ -11,7 +11,6 @@ local	int newuserpid();
 pid32	create_user_process(
 	  void		*funcaddr,	/* Address of the function	*/
 	  uint32	ssize,		/* Stack size in bytes		*/
-	  pri16		priority,	/* Process priority > 0		*/
 	  char		*name,		/* Name (for debugging)		*/
 	  uint32	nargs,		/* Number of args that follow	*/
 	  ...
@@ -29,7 +28,7 @@ pid32	create_user_process(
 	if (ssize < MINSTK)
 		ssize = MINSTK;
 	ssize = (uint32) roundmb(ssize);
-	if ( (priority < 1) || ((pid=newuserpid()) == SYSERR) ||
+	if ( ((pid=newuserpid()) == SYSERR) ||
 	     ((saddr = (uint32 *)getstk(ssize)) == (uint32 *)SYSERR) ) {
 		restore(mask);
 		return SYSERR;
@@ -40,7 +39,7 @@ pid32	create_user_process(
 
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
-	prptr->prprio = priority;
+	prptr->prprio = INITPRIO;
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;
