@@ -30,6 +30,7 @@ syscall	suspend(
 	if (prptr->prstate == PR_READY) {
 		getitem(pid);		    /* Remove a ready process	*/
 					    /*   from the ready list	*/
+		lottery_list_remove(pid);
 		prptr->prstate = PR_SUSP;
 	} else {
 		prptr->prstate = PR_SUSP;   /* Mark the current process	*/

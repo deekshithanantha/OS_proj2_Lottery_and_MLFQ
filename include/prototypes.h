@@ -122,6 +122,7 @@ extern	syscall	getc(did32);
 
 /* in file getitem.c */
 extern	pid32	getfirst(qid16);
+extern	pid32	getfirst_system_process(qid16);
 extern	pid32	getlast(qid16);
 extern	pid32	getitem(pid32);
 
@@ -290,6 +291,18 @@ extern	devcall	lpread(struct dentry *, char *, int32);
 /* in file lpwrite.c */
 extern	devcall	lpwrite(struct dentry *, char *, int32);
 
+/* in file lottery.c */
+extern 	pid32 lottery_scheduling();
+
+/* in file lottery.c */
+extern void	lottery_list_insert(pid32);
+
+/* in file lottery.c */
+extern bool8	lottery_list_contains(pid32);
+
+/* in file lottery.c */
+extern void 	lottery_list_remove(pid32);
+
 /* in file mark.c */
 extern	void	markinit(void);
 extern	status	mark(int32 *);
@@ -379,6 +392,7 @@ extern	int32	quark_irq_routing(void);
 /* in file queue.c */
 extern	pid32	enqueue(pid32, qid16);
 extern	pid32	dequeue(qid16);
+extern	pid32	dequeue_system_process(qid16);
 
 /* in file ramclose.c */
 extern	devcall	ramclose(struct dentry *);

@@ -23,6 +23,7 @@ status	ready(
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
 	insert(pid, readylist, prptr->prprio);
+	lottery_list_insert(pid);
 	resched();
 
 	return OK;

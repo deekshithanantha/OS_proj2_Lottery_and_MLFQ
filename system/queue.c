@@ -50,3 +50,27 @@ pid32	dequeue(
 	queuetab[pid].qnext = EMPTY;
 	return pid;
 }
+
+
+/*------------------------------------------------------------------------
+ *  dequeue_system_process  -  Remove and return the first system process on a list
+ *------------------------------------------------------------------------
+ */
+pid32	dequeue_system_process(
+	  qid16		q		/* ID of queue to use		*/
+	)
+{
+	pid32	pid;			/* ID of process removed	*/
+
+	if (isbadqid(q)) {
+		return SYSERR;
+	} else if (isempty(q)) {
+		return EMPTY;
+	}
+
+	pid = getfirst_system_process(q);
+	if(pid == EMPTY) return EMPTY;
+	queuetab[pid].qprev = EMPTY;
+	queuetab[pid].qnext = EMPTY;
+	return pid;
+}

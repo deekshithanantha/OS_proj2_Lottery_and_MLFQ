@@ -20,6 +20,9 @@
 				+ (uint32)sizeof(uint32)),	\
 				(uint32)roundmb(len) )
 
+#define freelottery(p) \
+    freemem((char *)(p), sizeof(struct lottery_node))
+
 struct	memblk	{			/* See roundmb & truncmb	*/
 	struct	memblk	*mnext;		/* Ptr to next free memory blk	*/
 	uint32	mlength;		/* Size of blk (includes memblk)*/

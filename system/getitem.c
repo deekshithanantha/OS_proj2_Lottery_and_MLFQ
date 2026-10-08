@@ -20,6 +20,35 @@ pid32	getfirst(
 	head = queuehead(q);
 	return getitem(queuetab[head].qnext);
 }
+/*------------------------------------------------------------------------
+ *  getfirst_system_process  -  Remove a process from the front of a queue
+ *------------------------------------------------------------------------
+ */
+pid32	getfirst_system_process(
+	  qid16		q		/* ID of queue from which to	*/
+	)				/* Remove a process (assumed	*/
+					/*   valid with no check)	*/
+{
+	pid32	head;
+
+	if (isempty(q)) {
+		return EMPTY;
+	}
+
+	head = queuehead(q);
+	head = queuetab[head].qnext;
+
+	while(proctab[head].userprocess==TRUE && queuetab[head].qnext!=queuetail(q)){
+		head=queuetab[head].qnext;
+	}
+
+	if (proctab[head].userprocess==TRUE)
+	{
+		return EMPTY;
+	}
+
+	return getitem(queuetab[head].qkey);
+}
 
 /*------------------------------------------------------------------------
  *  getlast  -  Remove a process from end of queue
