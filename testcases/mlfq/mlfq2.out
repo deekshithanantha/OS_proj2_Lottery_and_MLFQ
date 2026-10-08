@@ -1,0 +1,60 @@
+QUANTUM=5, TIME_ALLOTMENT=100, PRIORITY_BOOST_PERIOD=1000, UPRIORITY_QUEUES=3
+
+========================================== TESTCASE 1::  CPU-intensive jobs ===============================
+process 5:: name=cpu_1000, runtime=1000, turnaround time=2000, ctx=202, downgrades=4, upgrades=2
+process 6:: name=cpu_1000, runtime=1000, turnaround time=2000, ctx=202, downgrades=4, upgrades=2
+===========================================================================================================
+
+========================================== TESTCASE 2::  CPU-intensive jobs ===============================
+process 7:: name=cpu_1000, runtime=1000, turnaround time=2000, ctx=202, downgrades=4, upgrades=2
+process 8:: name=cpu_1000, runtime=1000, turnaround time=2000, ctx=202, downgrades=4, upgrades=2
+process 9:: name=cpu_1000_new, runtime=1000, turnaround time=3820, ctx=104, downgrades=4, upgrades=3
+process 10:: name=cpu_1000_del, runtime=1000, turnaround time=4010, ctx=105, downgrades=4, upgrades=4
+===========================================================================================================
+
+========================================== TESTCASE 3::  interactive job  =================================
+process 11:: name=burst_100/4/6, runtime=400, turnaround time=1000, ctx=102, downgrades=2, upgrades=1
+===========================================================================================================
+
+========================================== TESTCASE 4::  interactive jobs =================================
+process 12:: name=burst_100/4/6, runtime=400, turnaround time=2103, ctx=193, downgrades=2, upgrades=2
+process 13:: name=burst_100/4/6, runtime=400, turnaround time=1901, ctx=166, downgrades=2, upgrades=1
+process 14:: name=burst_100/4/6, runtime=400, turnaround time=1987, ctx=176, downgrades=2, upgrades=1
+process 15:: name=burst_100/4/6, runtime=400, turnaround time=1953, ctx=167, downgrades=2, upgrades=1
+process 16:: name=burst_100/4/6, runtime=400, turnaround time=1857, ctx=158, downgrades=2, upgrades=1
+===========================================================================================================
+
+========================================== TESTCASE 5:: mixed jobs ========================================
+process 17:: name=cpu_1000, runtime=1000, turnaround time=2779, ctx=245, downgrades=5, upgrades=2
+process 18:: name=cpu_1000, runtime=1000, turnaround time=2800, ctx=243, downgrades=5, upgrades=2
+process 19:: name=burst_100/4/6, runtime=400, turnaround time=1700, ctx=115, downgrades=2, upgrades=1
+process 20:: name=burst_100/4/6, runtime=400, turnaround time=2015, ctx=144, downgrades=2, upgrades=2
+===========================================================================================================
+
+========================================== TESTCASE 6::  scattered start  =================================
+process 21:: name=cpu_2000, runtime=2000, turnaround time=4500, ctx=62, downgrades=7, upgrades=4
+process 22:: name=cpu_300, runtime=250, turnaround time=2664, ctx=36, downgrades=1, upgrades=2
+process 23:: name=cpu_300, runtime=250, turnaround time=2594, ctx=33, downgrades=1, upgrades=2
+process 24:: name=cpu_300, runtime=250, turnaround time=2594, ctx=33, downgrades=1, upgrades=2
+process 25:: name=cpu_300, runtime=250, turnaround time=2594, ctx=33, downgrades=1, upgrades=2
+process 26:: name=cpu_300, runtime=250, turnaround time=2624, ctx=34, downgrades=1, upgrades=2
+process 27:: name=cpu_300, runtime=250, turnaround time=2604, ctx=34, downgrades=0, upgrades=2
+process 28:: name=cpu_300, runtime=250, turnaround time=3105, ctx=52, downgrades=2, upgrades=3
+process 29:: name=cpu_300, runtime=250, turnaround time=3149, ctx=52, downgrades=1, upgrades=3
+process 30:: name=cpu_300, runtime=250, turnaround time=3179, ctx=52, downgrades=1, upgrades=3
+process 31:: name=cpu_300, runtime=250, turnaround time=3194, ctx=52, downgrades=1, upgrades=3
+===========================================================================================================
+
+========================================== TESTCASE 7::  mixed jobs =======================================
+process 32:: name=cpu_2000, runtime=2000, turnaround time=4000, ctx=93, downgrades=7, upgrades=4
+process 33:: name=burst_100/2/8, runtime=200, turnaround time=2593, ctx=181, downgrades=0, upgrades=2
+process 34:: name=burst_100/2/8, runtime=200, turnaround time=2641, ctx=185, downgrades=0, upgrades=2
+process 35:: name=burst_100/2/8, runtime=200, turnaround time=2595, ctx=180, downgrades=0, upgrades=2
+process 36:: name=burst_100/2/8, runtime=200, turnaround time=2603, ctx=181, downgrades=0, upgrades=2
+process 37:: name=burst_100/2/8, runtime=200, turnaround time=2617, ctx=186, downgrades=0, upgrades=2
+process 38:: name=burst_100/2/8, runtime=200, turnaround time=2551, ctx=174, downgrades=0, upgrades=2
+process 39:: name=burst_100/2/8, runtime=200, turnaround time=2549, ctx=173, downgrades=0, upgrades=2
+process 40:: name=burst_100/2/8, runtime=200, turnaround time=2569, ctx=175, downgrades=0, upgrades=2
+process 41:: name=burst_100/2/8, runtime=200, turnaround time=2593, ctx=176, downgrades=0, upgrades=2
+process 42:: name=burst_100/2/8, runtime=200, turnaround time=2603, ctx=180, downgrades=0, upgrades=2
+===========================================================================================================
