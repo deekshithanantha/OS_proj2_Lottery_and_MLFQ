@@ -53,6 +53,7 @@ pid32	create(
 	prptr->turnaroundtime = 0;
 	prptr->num_ctxsw = 0;
 	prptr->userprocess = FALSE;
+	prptr->lottery_tickets=0;
 
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/

@@ -56,6 +56,7 @@ struct procent {		/* Entry in the process table		*/
 	uint32	turnaroundtime;	/* Milliseconds since creation until exit */
 	uint32	num_ctxsw;	/* Context switch operations to process */
 	bool8   userprocess; /* True if it is a user created process*/
+	uint32  lottery_tickets; /* Lottery tickets assigned for scheduling*/
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

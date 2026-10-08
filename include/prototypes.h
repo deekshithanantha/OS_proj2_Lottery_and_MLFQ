@@ -454,6 +454,9 @@ extern	devcall	sdmcwrite(struct dentry *, char *, int32);
 /* in file sdmcdispatch.S */
 extern	interrupt	sdmcdispatch(void);
 
+/* in file create_user_process.c */
+extern	void	set_tickets(pid32, uint32);
+
 /* in file read.c */
 extern	syscall	read(did32, char *, uint32);
 

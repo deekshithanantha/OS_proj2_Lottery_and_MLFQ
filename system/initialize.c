@@ -184,6 +184,7 @@ static	void	sysinit()
 		prptr->turnaroundtime = 0;
 		prptr->num_ctxsw = 0;
 		prptr->userprocess = FALSE;
+		prptr->lottery_tickets=0;
 	}
 
 	/* Initialize the Null process entry */	
