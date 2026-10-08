@@ -16,24 +16,28 @@ void 	lottery_list_remove(pid32 pid);
  *  lottery_scheduling  -  Make a process eligible for CPU service
  *------------------------------------------------------------------------
  */
-pid32	lottery_scheduling()
+pid32	lottery_scheduling(void)
 {	
 
 	struct lottery_node *curr_lottery_node = lottery_head;
 	
+	if (curr_lottery_node == NULL || total_lottery_tixs == 0) {
+		return EMPTY;
+	}
+
 	if(curr_lottery_node->next == NULL) {
 		return curr_lottery_node->pid;
 	}
 
 	uint32 counter = 0;
-	uint32 winner = 1 + rand() % total_lottery_tixs;
+	uint32 winner = rand() % total_lottery_tixs;
 
 	while(curr_lottery_node) {
 		counter = counter + curr_lottery_node->tickets;
 		if (counter > winner) break; // found the winner
 		curr_lottery_node = curr_lottery_node->next;
 	}
-	return curr_lottery_node->pid;
+	return curr_lottery_node != NULL ? curr_lottery_node->pid : EMPTY;
 }
 
 
@@ -73,22 +77,37 @@ void	lottery_list_insert(pid32 pid) {
 	// a user process and in ready state
 	mask = disable();
 	
-	if( isbadpid(pid) || proctab[pid].lottery_tickets == 0
+	if( isbadpid(pid) || pid == NULLPROC
 	    || proctab[pid].userprocess==FALSE 
-		|| proctab[pid].prstate != PR_CURR)
+		|| proctab[pid].prstate != PR_READY)
 		{
 			restore(mask);
 			return;
 		}
 	tickets = proctab[pid].lottery_tickets;
 
-	if (lottery_list_contains(pid))
-	{
+	if (tickets == 0) {
+		lottery_list_remove(pid);
+		restore(mask);
+		return;
+	}
+
+	/* Allocate before deleting an existing entry. */
+	node = (struct lottery_node *) getmem(sizeof(struct lottery_node));
+	if (node == (struct lottery_node *)SYSERR) {
+		panic("Cannot allocate lottery node");
+		restore(mask);
+		return;
+	}
+	if (lottery_list_contains(pid)) {
 		lottery_list_remove(pid);
 	}
 
-	node = (struct lottery_node *) getmem(sizeof(struct lottery_node));
-
+	if (tickets > 0xFFFFFFFFU - total_lottery_tixs) {
+		panic("Lottery ticket total overflow");
+		restore(mask);
+		return;
+	}
 	node->pid = pid;
 	node->tickets = tickets;
 
@@ -99,7 +118,7 @@ void	lottery_list_insert(pid32 pid) {
 
 	while(curr!=NULL && 
 		(curr->tickets > tickets || 
-		(curr->tickets = tickets && curr->pid <pid))) {
+		(curr->tickets == tickets && curr->pid <pid))) {
 			prev = curr;
 			curr = curr->next;
 		}

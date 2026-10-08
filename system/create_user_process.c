@@ -3,7 +3,6 @@
 #include <xinu.h>
 
 local	int newuserpid();
-void set_tickets(pid32 pid, uint32 tickets);
 
 /*------------------------------------------------------------------------
  *  create_user_process  -  create_user_process a process to start running a function on x86
@@ -50,6 +49,7 @@ pid32	create_user_process(
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
 	prptr->runtime = 0;
+	prptr->prcreationtime = ctr1000;
 	prptr->turnaroundtime = 0;
 	prptr->num_ctxsw = 0;
 	prptr->userprocess = TRUE;
@@ -125,7 +125,14 @@ local	pid32	newuserpid(void)
 	return (pid32) SYSERR;
 }
 
-void set_tickets(pid32 pid, uint32 tickets) 
+void set_tickets(pid32 pid, uint32 tickets)
 {
-	proctab[pid].lottery_tickets = tickets;
+    intmask mask = disable();
+    if (!isbadpid(pid) && proctab[pid].userprocess) {
+
+        proctab[pid].lottery_tickets = tickets;
+		
+        if (proctab[pid].prstate == PR_READY) lottery_list_insert(pid);
+    }
+    restore(mask);
 }

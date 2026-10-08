@@ -33,13 +33,14 @@ syscall	kill(
 
 	switch (prptr->prstate) {
 	case PR_CURR:
+		prptr->turnaroundtime = ctr1000 - prptr->prcreationtime;
 		prptr->prstate = PR_FREE;	/* Suicide */
-		lottery_list_remove(pid);
 		resched();
 
 	case PR_SLEEP:
 	case PR_RECTIM:
 		unsleep(pid);
+		prptr->turnaroundtime = ctr1000 - prptr->prcreationtime;
 		prptr->prstate = PR_FREE;
 		break;
 
@@ -49,10 +50,10 @@ syscall	kill(
 
 	case PR_READY:
 		getitem(pid);		/* Remove from queue */
-		lottery_list_remove(pid);
 		/* Fall through */
 
 	default:
+		prptr->turnaroundtime = ctr1000 - prptr->prcreationtime;
 		prptr->prstate = PR_FREE;
 	}
 

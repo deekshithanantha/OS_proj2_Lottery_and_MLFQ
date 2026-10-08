@@ -53,7 +53,8 @@ struct procent {		/* Entry in the process table		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
 	uint32	runtime;	/* Milliseconds spent in PR_CURR		*/
-	uint32	turnaroundtime;	/* Milliseconds since creation until exit */
+	uint32	prcreationtime; /* Millisecond timestamp at creation */
+	uint32	turnaroundtime;	/* Final elapsed milliseconds at exit */
 	uint32	num_ctxsw;	/* Context switch operations to process */
 	bool8   userprocess; /* True if it is a user created process*/
 	uint32  lottery_tickets; /* Lottery tickets assigned for scheduling*/

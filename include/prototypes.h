@@ -291,16 +291,16 @@ extern	devcall	lpread(struct dentry *, char *, int32);
 /* in file lpwrite.c */
 extern	devcall	lpwrite(struct dentry *, char *, int32);
 
-/* in file lottery.c */
-extern 	pid32 lottery_scheduling();
+/* in file lottery_scheduling.c */
+extern 	pid32 lottery_scheduling(void);
 
-/* in file lottery.c */
+/* in file lottery_scheduling.c */
 extern void	lottery_list_insert(pid32);
 
-/* in file lottery.c */
+/* in file lottery_scheduling.c */
 extern bool8	lottery_list_contains(pid32);
 
-/* in file lottery.c */
+/* in file lottery_scheduling.c */
 extern void 	lottery_list_remove(pid32);
 
 /* in file mark.c */

@@ -50,6 +50,7 @@ pid32	create(
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
 	prptr->runtime = 0;
+	prptr->prcreationtime = ctr1000;
 	prptr->turnaroundtime = 0;
 	prptr->num_ctxsw = 0;
 	prptr->userprocess = FALSE;

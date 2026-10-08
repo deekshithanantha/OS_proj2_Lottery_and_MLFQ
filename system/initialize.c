@@ -181,6 +181,7 @@ static	void	sysinit()
 		prptr->prstkbase = NULL;
 		prptr->prprio = 0;
 		prptr->runtime = 0;
+		prptr->prcreationtime = 0;
 		prptr->turnaroundtime = 0;
 		prptr->num_ctxsw = 0;
 		prptr->userprocess = FALSE;

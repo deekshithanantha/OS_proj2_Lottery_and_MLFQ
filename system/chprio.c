@@ -23,6 +23,11 @@ pri16	chprio(
 	prptr = &proctab[pid];
 	oldprio = prptr->prprio;
 	prptr->prprio = newprio;
+	if (prptr->prstate == PR_READY) {
+		getitem(pid);
+		insert(pid, readylist, newprio);
+		lottery_list_insert(pid);
+	}
 	restore(mask);
 	return oldprio;
 }

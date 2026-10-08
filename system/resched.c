@@ -13,6 +13,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 {
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
+	pid32 old_pid = currpid;	/* Needed even when logging is disabled */
 
 	/* If rescheduling is deferred, record attempt and return */
 
@@ -25,33 +26,37 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
-	#ifdef DEBUG_CTXSW
-		pid32 old_pid = currpid;
-	#endif
-
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->prprio > firstkey(readylist)) {
-			return;
-		}
+		/* Requeue before choosing a system process or lottery winner. */
 
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
 		insert(currpid, readylist, ptold->prprio);
+		lottery_list_insert(currpid);
 	}
 
-	/* Force context switch to highest priority ready process */
+	/* Select a non-null system first; otherwise try the lottery. */
 
 	currpid = dequeue_system_process(readylist);
 
 	if(currpid == EMPTY) {
 
-		currpid = lottery_scheduling(); 
+		currpid = lottery_scheduling();
+		if (currpid == EMPTY) {
+			currpid = NULLPROC;
+		}
+		getitem(currpid); /* Also removes the lottery node, if present. */
+		queuetab[currpid].qprev = EMPTY;
+		queuetab[currpid].qnext = EMPTY;
 	}
 
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
+	if (old_pid == currpid) {
+		return; /* No actual context switch. */
+	}
 	proctab[currpid].num_ctxsw++;
 	#ifdef DEBUG_CTXSW
 		if(old_pid!=currpid) {

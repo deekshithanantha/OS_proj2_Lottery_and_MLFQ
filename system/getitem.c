@@ -29,25 +29,16 @@ pid32	getfirst_system_process(
 	)				/* Remove a process (assumed	*/
 					/*   valid with no check)	*/
 {
-	pid32	head;
+    pid32 pid;
+	
+    for (pid = firstid(q); pid != queuetail(q); pid = queuetab[pid].qnext) {
 
-	if (isempty(q)) {
-		return EMPTY;
-	}
-
-	head = queuehead(q);
-	head = queuetab[head].qnext;
-
-	while(proctab[head].userprocess==TRUE && queuetab[head].qnext!=queuetail(q)){
-		head=queuetab[head].qnext;
-	}
-
-	if (proctab[head].userprocess==TRUE)
-	{
-		return EMPTY;
-	}
-
-	return getitem(queuetab[head].qkey);
+        if (pid != NULLPROC && !proctab[pid].userprocess) {
+        
+			return getitem(pid);
+        }
+    }
+    return EMPTY;
 }
 
 /*------------------------------------------------------------------------
@@ -78,6 +69,10 @@ pid32	getitem(
 	)
 {
 	pid32	prev, next;
+
+    if (proctab[pid].prstate == PR_READY && proctab[pid].userprocess) {
+        lottery_list_remove(pid);
+    }
 
 	next = queuetab[pid].qnext;	/* Following node in list	*/
 	prev = queuetab[pid].qprev;	/* Previous node in list	*/

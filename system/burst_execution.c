@@ -13,7 +13,7 @@ void burst_execution( uint32 number_bursts,  uint32 burst_duration,  uint32 slee
 	uint32 i;
 	uint32 initial_time;
 
-	struct procent *prptr = &proctab[currpid];
+	volatile struct procent *prptr = &proctab[currpid];
 
 
 	for(i=0; i<number_bursts; i++) {
