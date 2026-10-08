@@ -17,15 +17,15 @@ void	meminit(void) {
 
        /* Note: we pre-allocate  the "hole" between 640K and 1024K */
 
-       maxheap = (void *)0x600000;	/* Heap upper bound: 6 Mbytes */
+       maxheap = (void *)0x600000;	/* Assume 64 Mbytes for now */
        minheap = &end;
 
        memptr = memlist.mnext = (struct memblk *)roundmb(minheap);
-       if ((char *)minheap < HOLESTART && (char *)maxheap > HOLEEND) {
+       if ((char *)(maxheap+1) > HOLESTART) {
        	/* create two blocks that straddle the hole */
        	memptr->mnext = (struct memblk *)HOLEEND;
        	memptr->mlength = (int) truncmb((unsigned) HOLESTART -
-			 (unsigned)memptr);
+            		 (unsigned)&end - 4);
        	memptr = (struct memblk *) HOLEEND;
        	memptr->mnext = (struct memblk *) NULL;
        	memptr->mlength = (int) truncmb( (uint32)maxheap - 
@@ -35,13 +35,7 @@ void	meminit(void) {
        	memlist.mnext = memptr = (struct memblk *) roundmb(&end);
        	memptr->mnext = (struct memblk *) NULL;
        	memptr->mlength = (uint32) truncmb((uint32)maxheap -
-			(uint32)memptr - NULLSTK);
-       }
-
-       /* Initialize the total used by getmem/getstk/freemem. */
-       memlist.mlength = 0;
-       for (memptr = memlist.mnext; memptr != NULL; memptr = memptr->mnext) {
-           memlist.mlength += memptr->mlength;
+       			(uint32)&end - NULLSTK);
        }
 
        return;

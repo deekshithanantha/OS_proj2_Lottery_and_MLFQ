@@ -148,6 +148,7 @@ bool8	lottery_list_contains(pid32 pid) {
 			restore(mask);
 			return TRUE;
 		}
+		curr = curr->next;
 	}
 	restore(mask);	
 	return FALSE;
@@ -158,7 +159,7 @@ bool8	lottery_list_contains(pid32 pid) {
 void lottery_list_remove(pid32 pid) {
 	intmask mask = disable();
 	struct lottery_node *curr = lottery_head;
-	struct lottery_node *prev;
+	struct lottery_node *prev = NULL;
 
 	while(curr!=NULL && curr->pid!=pid) {
 		prev = curr;
@@ -174,7 +175,7 @@ void lottery_list_remove(pid32 pid) {
 
 		total_lottery_tixs -= curr->tickets;
 		freelottery(curr);
-		restore(mask);	
 	}
+	restore(mask);
 
 }
