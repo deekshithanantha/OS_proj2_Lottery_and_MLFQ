@@ -13,6 +13,15 @@ qid16 mlfq_list[UPRIORITY_QUEUES];
 
 pid32	mlfq_scheduler(void)
 {	
+	uint32 i;
+
+	for(i = 0; i < UPRIORITY_QUEUES; i++) {
+		qid16 q = mlfq_list[i];
+		if(queuetab[queuehead(q)].qnext != queuetail(q)) {
+			return getfirst(q);
+		} 
+	}
+	return EMPTY;
 
 	
 }

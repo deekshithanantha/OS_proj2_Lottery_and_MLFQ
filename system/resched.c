@@ -13,6 +13,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 {
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
+	pid32 old_pid = currpid;
 
 	/* If rescheduling is deferred, record attempt and return */
 
@@ -25,31 +26,40 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
-	#ifdef DEBUG_CTXSW
-		pid32 old_pid = currpid;
-	#endif
-
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->prprio > firstkey(readylist)) {
+		if (!ptold->userprocess && currpid != NULLPROC &&
+		    ptold->prprio > firstkey(readylist)) {
 			return;
 		}
 
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-		insert(currpid, readylist, ptold->prprio);
+		if (ptold->userprocess) {
+			mlfq_list_insert(currpid);
+		} else {
+			insert(currpid, readylist, ptold->prprio);
+		}
 	}
 
 	/* Force context switch to highest priority ready process */
+	
+	if (nonempty(readylist) && firstid(readylist) != NULLPROC) {
+	    currpid = dequeue(readylist);                           
+	} else {                                                    
+	    currpid = mlfq_scheduler();                                                
+	                                                            
+	    if (currpid == EMPTY) {                                  
+	        currpid = dequeue(readylist); /* Select null */     
+	    }                                                       
+	}                                                                 
 
-	currpid = dequeue(readylist);
-
-	if(currpid == EMPTY) {
-		currpid = mlfq_scheduler();
-	}
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
+	if (old_pid == currpid) {
+		return;		/* No actual context switch */
+	}
 	proctab[currpid].num_ctxsw++;
 	#ifdef DEBUG_CTXSW
 		if(old_pid!=currpid) {

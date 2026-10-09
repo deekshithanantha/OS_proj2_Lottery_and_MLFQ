@@ -309,6 +309,9 @@ extern	bpid32	mkbufpool(int32, int32);
 /* in file mlfq.c */
 extern void mlfq_list_insert(pid32);
 
+/* in file mlfq.c */
+extern pid32 mlfq_scheduler(void);
+
 /* in file mount.c */
 extern	syscall	mount(char *, char *, did32);
 extern	int32	namlen(char *, int32);
