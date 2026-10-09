@@ -84,10 +84,8 @@ void mlfq_list_booster() {
 	for (i = 0; i < NPROC; i++) {
 
 		if(proctab[i].userprocess && proctab[i].prstate != PR_FREE) {
-			if(proctab[i].mlfq_level > 0)
-			{
-				proctab[i].upgrades++;			
-			}
+			/* Count every boost, including jobs already at the top level. */
+			proctab[i].upgrades++;
 			proctab[i].mlfq_level = 0;
 			proctab[i].allotment_used = 0;
 
