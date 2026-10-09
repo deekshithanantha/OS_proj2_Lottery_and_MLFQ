@@ -25,6 +25,34 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
+	
+	// check the mlfq exit element. userProcess and not deleted
+	// check allotment, 
+    //   if  allotment =0, reduce level (check it not less than level)                                                        
+    //   else deque from the list and enque it again                                                       
+    //                                                          
+    //                                                          
+    //                                                          
+
+	if(ptold->userprocess && ptold->prstate != PR_FREE) {
+
+		uint32 level = ptold->mlfq_level;
+		uint32 allotment_allowed = (1U << level) * TIME_ALLOTMENT;
+		
+
+		if(ptold->allotment_used >= allotment_allowed) {
+
+			if(level +1 < UPRIORITY_QUEUES ) {
+				ptold->mlfq_level++;
+				ptold->allotment_used = 0;
+				ptold->downgrades++;
+			}
+		}
+
+		
+	}
+
+
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (!ptold->userprocess && currpid != NULLPROC &&

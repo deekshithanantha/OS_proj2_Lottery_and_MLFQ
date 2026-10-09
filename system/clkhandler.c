@@ -14,7 +14,12 @@ void	clkhandler()
 	ctr1000++;  
 
 	if(proctab[currpid].prstate == PR_CURR) {
+		
 		proctab[currpid].runtime++;
+		
+		if(proctab[currpid].userprocess == TRUE) {
+			proctab[currpid].allotment_used++;
+		}
 	}
 
 	for(pid=0;pid<NPROC;pid++){
