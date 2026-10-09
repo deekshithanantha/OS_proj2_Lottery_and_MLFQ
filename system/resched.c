@@ -32,8 +32,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     //   else deque from the list and enque it again                                                       
     //                                                          
     //                                                          
-    //                                                          
-
+    //                     
+	        
 	if(ptold->userprocess && ptold->prstate != PR_FREE) {
 
 		uint32 level = ptold->mlfq_level;
@@ -46,13 +46,17 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 				ptold->mlfq_level++;
 				ptold->allotment_used = 0;
 				ptold->downgrades++;
-			}
-		}
-
-		
+		}		
 	}
 
 
+		}
+
+		
+	if(boost_time_monitor >= PRIORITY_BOOST_PERIOD) {
+		mlfq_list_booster();
+	}
+	
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (!ptold->userprocess && currpid != NULLPROC &&

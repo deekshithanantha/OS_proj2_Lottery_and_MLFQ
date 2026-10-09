@@ -4,6 +4,7 @@
 
 uint32	clktime;		/* Seconds since boot			*/
 uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
+uint32	boost_time_monitor = 0;		/* ticks to monitor when to boost	*/
 qid16	sleepq;			/* Queue of sleeping processes		*/
 uint32	preempt;		/* Preemption counter			*/
 

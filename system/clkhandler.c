@@ -12,6 +12,7 @@ void	clkhandler()
 	pid32 pid;
 
 	ctr1000++;  
+	boost_time_monitor++;  
 
 	if(proctab[currpid].prstate == PR_CURR) {
 		
@@ -58,7 +59,8 @@ void	clkhandler()
 	/* Decrement the preemption counter, and reschedule when the */
 	/*   remaining time reaches zero			     */
 
-	if((--preempt) <= 0) {
+	if((--preempt) <= 0 ||
+    	boost_time_monitor >= PRIORITY_BOOST_PERIOD) {
 		preempt = QUANTUM;
 		resched();
 	}

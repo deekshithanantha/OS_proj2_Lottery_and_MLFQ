@@ -12,6 +12,8 @@
 extern	uint32	clktime;		/* second since system boot	*/
 extern  uint32	count1000;		/* ticks since clktime		*/
 extern  uint32	ctr1000;		/* ticks since clktime		*/
+extern  uint32	boost_time_monitor;		/* ticks to monitor when to boost	*/
+
 
 
 extern	qid16	sleepq;			/* queue for sleeping processes	*/
