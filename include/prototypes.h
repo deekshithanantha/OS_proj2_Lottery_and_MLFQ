@@ -306,6 +306,9 @@ extern  void    *memset(void *, const int, int32);
 /* in file mkbufpool.c */
 extern	bpid32	mkbufpool(int32, int32);
 
+/* in file mlfq.c */
+extern void mlfq_list_insert(pid32);
+
 /* in file mount.c */
 extern	syscall	mount(char *, char *, did32);
 extern	int32	namlen(char *, int32);

@@ -52,6 +52,11 @@ pid32	create_user_process(
 	prptr->turnaroundtime = 0;
 	prptr->num_ctxsw = 0;
 	prptr->userprocess = TRUE;
+	prptr->mlfq_level = 0;
+	prptr->allotment_used = 0;
+	prptr->upgrades = 0;
+	prptr->downgrades = 0;
+
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

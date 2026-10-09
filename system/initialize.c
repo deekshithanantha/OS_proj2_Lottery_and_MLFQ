@@ -184,6 +184,10 @@ static	void	sysinit()
 		prptr->turnaroundtime = 0;
 		prptr->num_ctxsw = 0;
 		prptr->userprocess = FALSE;
+		prptr->mlfq_level = 0;
+		prptr->allotment_used = 0;
+		prptr->upgrades = 0;
+		prptr->downgrades = 0;
 	}
 
 	/* Initialize the Null process entry */	
@@ -213,6 +217,12 @@ static	void	sysinit()
 	/* Create a ready list for processes */
 
 	readylist = newqueue();
+
+	/* Create a level by level FIFO MLFQ*/
+
+	for (i=0; i<UPRIORITY_QUEUES; i++) {
+		mlfq_list[i] = newqueue();
+	} 
 
 
 	/* initialize the PCI bus */

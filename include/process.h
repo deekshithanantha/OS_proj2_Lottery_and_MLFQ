@@ -56,6 +56,10 @@ struct procent {		/* Entry in the process table		*/
 	uint32	turnaroundtime;	/* Milliseconds since creation until exit */
 	uint32	num_ctxsw;	/* Context switch operations to process */
 	bool8   userprocess; /* True if it is a user created process*/
+	uint32  mlfq_level;     /*Queue level in the MLFQ */
+	uint32  allotment_used; /*Time burned on a queue */
+	uint32  upgrades;       /* No of priority boosts */
+	uint32  downgrades;     /* No of priority down grades */ 
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

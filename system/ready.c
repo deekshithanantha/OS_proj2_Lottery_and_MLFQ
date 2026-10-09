@@ -21,8 +21,19 @@ status	ready(
 	/* Set process state to indicate ready and add to ready list */
 
 	prptr = &proctab[pid];
+
 	prptr->prstate = PR_READY;
-	insert(pid, readylist, prptr->prprio);
+
+	if(prptr->userprocess == FALSE) {
+		insert(pid, readylist, prptr->prprio);
+	}
+
+	else {
+		mlfq_list_insert(pid);
+	}
+
+	// Insert into MLFQ
+
 	resched();
 
 	return OK;
