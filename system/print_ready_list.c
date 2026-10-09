@@ -7,10 +7,12 @@
 syscall	print_ready_list()
 {
 	qid16	curr;	
+	intmask mask = disable();
 	curr = firstid(readylist);		
 	while(curr != queuetail(readylist)) {
 		kprintf("PID:%d, Priority:%d\n",curr,queuetab[curr].qkey);
 		curr = queuetab[curr].qnext;
 	}
+	restore(mask);
 	return OK;
 }
