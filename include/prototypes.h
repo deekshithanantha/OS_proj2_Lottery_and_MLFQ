@@ -32,6 +32,9 @@ extern	uint32	clkcount(void);
 /* in file clkhandler.c */
 extern	interrupt clkhandler(void);
 
+/* in file clkhandler.c */
+extern	void reset_timing(void);
+
 /* in file clkinit.c */
 extern	void	clkinit(void);
 

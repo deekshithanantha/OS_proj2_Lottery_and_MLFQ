@@ -65,3 +65,11 @@ void	clkhandler()
 		resched();
 	}
 }
+
+
+void reset_timing(void)
+{
+    intmask mask = disable();
+    boost_time_monitor = 0;
+    restore(mask);
+}

@@ -1,7 +1,7 @@
 /* resched.c - resched, resched_cntl */
 
 #include <xinu.h>
-#define DEBUG_CTXSW
+//#define DEBUG_CTXSW
 
 struct	defer	Defer;
 

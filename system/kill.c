@@ -36,6 +36,7 @@ syscall	kill(
 		prptr->prstate = PR_FREE;	/* Suicide */
 		resched();
 
+
 	case PR_SLEEP:
 	case PR_RECTIM:
 		unsleep(pid);
