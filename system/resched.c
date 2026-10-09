@@ -14,6 +14,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
 	pid32 old_pid = currpid;
+	bool8 boost_due;
 
 	/* If rescheduling is deferred, record attempt and return */
 
@@ -25,6 +26,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
+	boost_due = (boost_time_monitor >= PRIORITY_BOOST_PERIOD);
 	
 	// check the mlfq exit element. userProcess and not deleted
 	// check allotment, 
@@ -53,13 +55,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		}
 
 		
-	if(boost_time_monitor >= PRIORITY_BOOST_PERIOD) {
-		mlfq_list_booster();
-	}
-	
-
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (!ptold->userprocess && currpid != NULLPROC &&
+		if (!boost_due && !ptold->userprocess && currpid != NULLPROC &&
 		    ptold->prprio > firstkey(readylist)) {
 			return;
 		}
@@ -72,6 +69,13 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		} else {
 			insert(currpid, readylist, ptold->prprio);
 		}
+	}
+
+	/* Return the running process to its queue before merging levels.
+	 * Blocked processes stay outside the ready queues.
+	 */
+	if (boost_due) {
+		mlfq_list_booster();
 	}
 
 	/* Force context switch to highest priority ready process */
