@@ -1,0 +1,75 @@
+/* clkhandler.c - clkhandler */
+
+#include <xinu.h>
+
+/*------------------------------------------------------------------------
+ * clkhandler - high level clock interrupt handler
+ *------------------------------------------------------------------------
+ */
+void	clkhandler()
+{
+	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
+	pid32 pid;
+
+	ctr1000++;  
+	boost_time_monitor++;  
+
+	if(proctab[currpid].prstate == PR_CURR) {
+		
+		proctab[currpid].runtime++;
+		
+		if(proctab[currpid].userprocess == TRUE) {
+			proctab[currpid].allotment_used++;
+		}
+	}
+
+	for(pid=0;pid<NPROC;pid++){
+		if(proctab[pid].prstate != PR_FREE) {
+			proctab[pid].turnaroundtime++;
+		}
+	}
+
+	
+
+	/* Decrement the ms counter, and see if a second has passed */
+
+	if((--count1000) <= 0) {
+
+		/* One second has passed, so increment seconds count */
+
+		clktime++;
+
+		/* Reset the local ms counter for the next second */
+
+		count1000 = 1000;
+	}
+
+	/* Handle sleeping processes if any exist */
+
+	if(!isempty(sleepq)) {
+
+		/* Decrement the delay for the first process on the	*/
+		/*   sleep queue, and awaken if the count reaches zero	*/
+
+		if((--queuetab[firstid(sleepq)].qkey) <= 0) {
+			wakeup();
+		}
+	}
+
+	/* Decrement the preemption counter, and reschedule when the */
+	/*   remaining time reaches zero			     */
+
+	if((--preempt) <= 0 ||
+    	boost_time_monitor >= PRIORITY_BOOST_PERIOD) {
+		preempt = QUANTUM;
+		resched();
+	}
+}
+
+
+void reset_timing(void)
+{
+    intmask mask = disable();
+    boost_time_monitor = 0;
+    restore(mask);
+}
