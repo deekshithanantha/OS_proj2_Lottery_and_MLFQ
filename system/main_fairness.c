@@ -1,4 +1,3 @@
-/* Copy this file to system/main.c to run the fairness test. */
 #include <xinu.h>
 #include <stdio.h>
 
